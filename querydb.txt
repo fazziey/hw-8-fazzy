@@ -1,0 +1,47 @@
+# Create Table
+CREATE TABLE list_film(id_film serial PRIMARY KEY, title VARCHAR, rating INT, last_update TIMESTAMP);
+CREATE TABLE actor(id_actor serial PRIMARY KEY, first_name VARCHAR, last_name VARCHAR, last_update TIMESTAMP);
+CREATE TABLE category_film(id_category SERIAL PRIMARY KEY, name VARCHAR, last_update TIMESTAMP);
+
+# Masukkan data ke dalam table
+INSERT INTO list_film(title, rating, last_update)
+values  ('BIG FISH', 8, NOW()),
+        ('Gone Girl', 8, NOW()),
+        ('Back to the Future', 8, NOW()),
+        ('Memento', 8, NOW());
+
+INSERT INTO category_film(name, last_update)
+values  ('Adventure', NOW()),
+        ('Comedy', NOW()),
+        ('Drama', NOW()),
+        ('Mystery', NOW()); 
+
+INSERT INTO actor (first_name, last_name, last_update)
+values  ('Ewan', 'McGregor', NOW()),
+        ('Domhnall', 'Gleeson', NOW()),
+        ('Ben', 'Affleck', NOW()),
+        ('Michael', 'J. Fox', NOW()),
+        ('Guy', 'Pearce', NOW());
+
+# menambahkan column id_category
+ALTER TABLE list_film
+ADD COLUMN id_category int;
+
+# Update data pada table
+UPDATE list_film SET id_category = 1 WHERE id_film = 1;
+UPDATE list_film SET id_category = 2 WHERE id_film = 2;
+UPDATE list_film SET id_category = 3 WHERE id_film = 3;
+UPDATE list_film SET id_category = 1 WHERE id_film = 4;
+UPDATE list_film SET id_category = 4 WHERE id_film = 5;
+
+# Relasi table list_film dan category_film
+ALTER TABLE list_film ADD CONSTRAINT fk_category_film FOREIGN KEY(id_category) REFERENCES category_film(id);
+
+# Menampilkan hasil relasi table
+SELECT * FROM list_film INNER JOIN category_film on list_film.id_category = id;
+
+
+SELECT list_film.title, category_film.name
+FROM list_film
+INNER JOIN category_film ON list_film.id_category = category_film.id
+WHERE category_film.name = 'Adventure';
